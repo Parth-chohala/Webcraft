@@ -1,0 +1,356 @@
+{
+    "assets": [],
+    "styles": [
+        {
+            "selectors": [
+                "#ihyf"
+            ],
+            "style": {
+                "background-color": "rgba(228, 228, 228, 1)"
+            },
+            "wrapper": 1
+        },
+        {
+            "selectors": [],
+            "selectorsAdd": "*",
+            "style": {
+                "box-sizing": "border-box"
+            }
+        },
+        {
+            "selectors": [],
+            "selectorsAdd": "body",
+            "style": {
+                "margin": "0"
+            }
+        },
+        {
+            "selectors": [
+                "gjs-grid-column"
+            ],
+            "style": {
+                "flex": "1 1 0%",
+                "padding": "5px 0"
+            }
+        },
+        {
+            "selectors": [
+                "#ie1i"
+            ],
+            "style": {
+                "height": "100%",
+                "min-width": "20%",
+                "max-width": "20%"
+            }
+        },
+        {
+            "selectors": [
+                "#i6b9"
+            ],
+            "style": {
+                "min-height": "100%",
+                "min-width": "60%",
+                "max-width": "60%"
+            }
+        },
+        {
+            "selectors": [
+                "#ilsu"
+            ],
+            "style": {
+                "height": "100%",
+                "min-width": "20%",
+                "max-width": "20%"
+            }
+        },
+        {
+            "selectors": [
+                "#iawtd"
+            ],
+            "style": {
+                "text-align": "center"
+            }
+        },
+        {
+            "selectors": [
+                "#ivmzl"
+            ],
+            "style": {
+                "min-height": "349px",
+                "background-color": "rgba(255, 252, 252, 1)",
+                "border-top-left-radius": "10px",
+                "border-top-right-radius": "10px",
+                "border-bottom-left-radius": "10px",
+                "border-bottom-right-radius": "10px"
+            }
+        },
+        {
+            "selectors": [
+                "gjs-divider"
+            ],
+            "style": {
+                "height": "3px",
+                "width": "100%",
+                "margin": "10px",
+                "background-color": "rgba(0, 0, 0, 0.05)"
+            }
+        },
+        {
+            "selectors": [
+                "#ixxo3"
+            ],
+            "style": {
+                "width": "95%"
+            }
+        },
+        {
+            "selectors": [
+                "#i5dow"
+            ],
+            "style": {
+                "padding": "10px"
+            }
+        },
+        {
+            "selectors": [
+                "#i07s8"
+            ],
+            "style": {
+                "font-family": "'Segoe UI', sans-serif",
+                "background-color": "rgba(0, 0, 0, 1)",
+                "color": "white",
+                "height": "100vh",
+                "display": "flex",
+                "flex-direction": "column",
+                "align-items": "center",
+                "justify-content": "center",
+                "padding": "2rem",
+                "text-align": "center",
+                "border-top-left-radius": "15px",
+                "border-top-right-radius": "15px",
+                "border-bottom-left-radius": "15px",
+                "border-bottom-right-radius": "15px"
+            }
+        },
+        {
+            "selectors": [
+                "#icoy1"
+            ],
+            "style": {
+                "font-size": "2.5rem",
+                "color": "#f3c1f0",
+                "margin-bottom": "0.5rem"
+            }
+        },
+        {
+            "selectors": [
+                "#ic7cx"
+            ],
+            "style": {
+                "font-size": "1.125rem",
+                "color": "#ccc",
+                "max-width": "600px"
+            }
+        },
+        {
+            "selectors": [
+                "#i2rvv"
+            ],
+            "style": {
+                "margin-top": "2rem"
+            }
+        },
+        {
+            "selectors": [
+                "#i92ns"
+            ],
+            "style": {
+                "background-color": "#e879f9",
+                "color": "white",
+                "border": "none",
+                "padding": "0.75rem 1.5rem",
+                "font-size": "1rem",
+                "border-radius": "0.5rem",
+                "cursor": "pointer"
+            }
+        },
+        {
+            "selectors": [
+                "#isi21"
+            ],
+            "style": {
+                "position": "absolute",
+                "bottom": "1rem",
+                "font-size": "0.9rem",
+                "color": "#888"
+            }
+        }
+    ],
+    "pages": [
+        {
+            "name": "Home",
+            "frames": [
+                {
+                    "component": {
+                        "type": "wrapper",
+                        "attributes": {
+                            "id": "ihyf"
+                        },
+                        "components": [
+                            {
+                                "attributes": {
+                                    "id": "i07s8"
+                                },
+                                "components": [
+                                    {
+                                        "type": "comment",
+                                        "content": " Logo "
+                                    },
+                                    {
+                                        "type": "comment",
+                                        "content": " Title "
+                                    },
+                                    {
+                                        "type": "heading",
+                                        "attributes": {
+                                            "id": "icoy1"
+                                        },
+                                        "components": [
+                                            {
+                                                "type": "textnode",
+                                                "content": "\n    Welcome to WebCraft\n  "
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "comment",
+                                        "content": " Subtitle "
+                                    },
+                                    {
+                                        "tagName": "p",
+                                        "type": "text",
+                                        "attributes": {
+                                            "id": "ic7cx"
+                                        },
+                                        "components": [
+                                            {
+                                                "type": "textnode",
+                                                "content": "\n    Start creating beautiful websites with drag and drop ease. Click on the sidebar to add elements and get started with your design.\n  "
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "comment",
+                                        "content": " Call to Action "
+                                    },
+                                    {
+                                        "attributes": {
+                                            "id": "i2rvv"
+                                        },
+                                        "components": [
+                                            {
+                                                "type": "button",
+                                                "attributes": {
+                                                    "type": "button",
+                                                    "id": "i92ns"
+                                                },
+                                                "components": [
+                                                    {
+                                                        "type": "contentEditable",
+                                                        "components": [
+                                                            {
+                                                                "type": "textnode",
+                                                                "content": "\n      Start Building\n    "
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "comment",
+                                        "content": " Footer Info "
+                                    },
+                                    {
+                                        "type": "text",
+                                        "attributes": {
+                                            "id": "isi21"
+                                        },
+                                        "components": [
+                                            {
+                                                "type": "textnode",
+                                                "content": "\n    WebCraft Studio © 2025\n  "
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ],
+                        "doctype": "<!DOCTYPE html>",
+                        "head": {
+                            "type": "head",
+                            "components": [
+                                {
+                                    "tagName": "title",
+                                    "type": "text",
+                                    "components": [
+                                        {
+                                            "type": "textnode",
+                                            "content": "Home"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "tagName": "meta",
+                                    "void": true,
+                                    "attributes": {
+                                        "charset": "utf-8"
+                                    }
+                                },
+                                {
+                                    "tagName": "meta",
+                                    "void": true,
+                                    "attributes": {
+                                        "name": "viewport",
+                                        "content": "width=device-width,initial-scale=1"
+                                    }
+                                },
+                                {
+                                    "tagName": "meta",
+                                    "void": true,
+                                    "attributes": {
+                                        "name": "robots",
+                                        "content": "index,follow"
+                                    }
+                                },
+                                {
+                                    "tagName": "meta",
+                                    "void": true,
+                                    "attributes": {
+                                        "name": "generator",
+                                        "content": "GrapesJS Studio"
+                                    }
+                                }
+                            ]
+                        },
+                        "docEl": {
+                            "tagName": "html"
+                        }
+                    },
+                    "id": "G6KlnqKroVIi3g46"
+                }
+            ],
+            "id": "N6ry89oaLbtZWAJ8"
+        }
+    ],
+    "symbols": [],
+    "dataSources": [],
+    "custom": {
+        "projectType": "web",
+        "id": "",
+        "globalPageSettings": {
+            "fonts": {}
+        }
+    }
+}

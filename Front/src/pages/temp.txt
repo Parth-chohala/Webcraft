@@ -1,0 +1,533 @@
+ setTimeout(() => {
+      toast.success(
+      "Welcome to WebCraft! Start building your dream website today!",
+      {
+      icon: (
+        <span className="inline-block animate-wave text-yellow-400 text-xl">
+          👋
+        </span>
+      ),
+      }
+      );
+      toast.error("Something went wrong. Please try again.", {
+      icon: (
+      <span className="inline-block animate-pulse-error text-red-500 text-xl">
+        ❌
+      </span>
+      ),
+      });
+toast.success("Everything looks good! You're all set 👌", {
+  icon: (
+    <span className="inline-block animate-wiggle-ok text-green-500 text-xl">
+      👌
+    </span>
+  ),
+});
+
+
+    // toast.info(
+    //   "Check out our features and testimonials to see how WebCraft can help you!",
+    //   {
+    //     position: "top-right",
+    //     autoClose: 7000,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     draggable: true,
+    //     progress: undefined,
+    //     // theme: theme,
+    //     // className:
+    //     //   theme === "dark" ? "bg-[#1e1e1e] text-white" : "bg-white text-black",
+    //   }
+    // );
+
+    // toast.warn(
+    //   "Don't forget to explore our drag-and-drop builder and one-click publishing!",
+    //   {
+    //     position: "top-right",
+    //     autoClose: 9000,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     draggable: true,
+    //     progress: undefined,
+    //     // theme: theme,
+    //     // className:
+    //     //   theme === "dark"
+    //     //     ? "bg-[#1e1e1e] text-yellow-300"
+    //     //     : "bg-white text-yellow-700",
+    //   }
+    // );
+
+    // toast.error("Need help? Our support team is here for you 24/7!", {
+    //   position: "top-right",
+    //   autoClose: 11000,
+    //   hideProgressBar: false,
+    //   closeOnClick: true,
+    //   pauseOnHover: true,
+    //   draggable: true,
+    //   progress: undefined,
+    //   // theme: theme,
+    //   // className:
+    //   //   theme === "dark"
+    //   //     ? "bg-[#1e1e1e] text-red-400"
+    //   //     : "bg-white text-red-600",
+    // });
+  }, 3000);
+  {
+    "message": "Web data updated successfully",
+
+}
+
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { useTheme } from "../contexts/ThemeContext";
+import Header from "../components/Header";
+import {
+  Plus,
+  Globe,
+  Edit3,
+  Trash2,
+  Copy,
+  MoreVertical,
+  Search,
+  Filter,
+  Grid,
+  List,
+} from "lucide-react";
+
+interface Website {
+  id: string;
+  name: string;
+  description: string;
+  thumbnail: string;
+  lastModified: string;
+  status: "draft" | "published";
+  url?: string;
+}
+
+const Dashboard: React.FC = () => {
+  const { theme } = useTheme();
+  const navigate = useNavigate();
+
+  const [websites, setWebsites] = useState<Website[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [filterStatus, setFilterStatus] = useState<
+    "all" | "draft" | "published"
+  >("all");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchWebsites = async () => {
+      try {
+        const response = await fetch("http://localhost:9080/api/webdata/all", {
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          method: "GET",
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const formatted: Website[] = data.map((item: any) => ({
+            id: item._id,
+            name: item.title,
+            description: item.description,
+            thumbnail: item.thumbnail || "",
+            lastModified: "Just now",
+            status: "draft", // Replace with real status if available
+            url: undefined,
+          }));
+          setWebsites(formatted);
+        } else {
+          console.error(
+            "Failed to fetch websites with status:",
+            response.status
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching websites:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchWebsites();
+  }, []);
+
+  const filteredWebsites = websites.filter((website) => {
+    const matchesSearch =
+      website?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      website?.description?.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesFilter =
+      filterStatus === "all" || website.status === filterStatus;
+    return matchesSearch && matchesFilter;
+  });
+
+  const handleCreateNew = () => {
+    navigate("/create-project");
+  };
+
+  const handleEditWebsite = (id: string) => {
+    navigate(`/editor/${id}`);
+  };
+
+  const handleDeleteWebsite = (id: string) => {
+    setWebsites((prev) => prev.filter((site) => site.id !== id));
+  };
+
+  const handleDuplicateWebsite = (website: Website) => {
+    const newWebsite: Website = {
+      ...website,
+      id: Date.now().toString(),
+      name: `${website.name} (Copy)`,
+      lastModified: "Just now",
+      status: "draft",
+    };
+    setWebsites((prev) => [newWebsite, ...prev]);
+  };
+
+  return (
+    <div
+      className={`min-h-screen ${
+        theme === "dark"
+          ? "bg-dark-background text-dark-text"
+          : "bg-light-background text-light-text"
+      }`}
+    >
+      <Header />
+      <div className="pt-20 pb-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header */}
+          <div className="mb-8">
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-3xl md:text-4xl font-bold mb-2"
+            >
+              My Websites
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-lg text-opacity-80"
+            >
+              Manage and edit your website projects
+            </motion.p>
+          </div>
+
+          {/* Controls */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="flex flex-col md:flex-row gap-4 mb-8"
+          >
+            <button
+              onClick={handleCreateNew}
+              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-transform hover:scale-105 ${
+                theme === "dark"
+                  ? "bg-dark-primary text-white"
+                  : "bg-light-primary text-white"
+              }`}
+            >
+              <Plus className="h-5 w-5" /> Create New Website
+            </button>
+
+            <div className="flex flex-1 gap-4">
+              {/* Search */}
+              <div className="relative flex-1 max-w-md">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 opacity-60" />
+                <input
+                  type="text"
+                  placeholder="Search websites..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className={`w-full pl-10 pr-4 py-3 rounded-lg border focus:outline-none ${
+                    theme === "dark"
+                      ? "bg-dark-sidebar border-dark-border text-dark-text placeholder-dark-infoText focus:border-dark-primary"
+                      : "bg-light-sidebar border-light-border text-light-text placeholder-light-info focus:border-light-primary"
+                  }`}
+                />
+              </div>
+
+              {/* Filter */}
+              <select
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value as any)}
+                className={`px-4 py-3 rounded-lg border focus:outline-none ${
+                  theme === "dark"
+                    ? "bg-dark-sidebar border-dark-border text-dark-text focus:border-dark-primary"
+                    : "bg-light-sidebar border-light-border text-light-text focus:border-light-primary"
+                }`}
+              >
+                <option value="all">All Status</option>
+                <option value="draft">Draft</option>
+                <option value="published">Published</option>
+              </select>
+
+              {/* View Mode Toggle */}
+              <div className="flex rounded-lg border overflow-hidden">
+                <button
+                  onClick={() => setViewMode("grid")}
+                  className={`p-3 ${
+                    viewMode === "grid"
+                      ? theme === "dark"
+                        ? "bg-dark-primary text-white"
+                        : "bg-light-primary text-white"
+                      : theme === "dark"
+                      ? "bg-dark-sidebar text-dark-text hover:bg-dark-background"
+                      : "bg-light-sidebar text-light-text hover:bg-light-background"
+                  }`}
+                >
+                  <Grid className="h-5 w-5" />
+                </button>
+                <button
+                  onClick={() => setViewMode("list")}
+                  className={`p-3 ${
+                    viewMode === "list"
+                      ? theme === "dark"
+                        ? "bg-dark-primary text-white"
+                        : "bg-light-primary text-white"
+                      : theme === "dark"
+                      ? "bg-dark-sidebar text-dark-text hover:bg-dark-background"
+                      : "bg-light-sidebar text-light-text hover:bg-light-background"
+                  }`}
+                >
+                  <List className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Websites List */}
+          {loading ? (
+            <div className="flex justify-center items-center py-10">
+              <div
+                className="w-10 h-10 border-4 border-t-transparent rounded-full animate-spin"
+                style={{
+                  borderColor: theme === "dark" ? "#c15aa0" : "#7b2cbf",
+                  borderTopColor: "transparent",
+                }}
+              />
+            </div>
+          ) : filteredWebsites.length === 0 ? (
+            <div className="text-center py-16">
+              <Globe className="w-16 h-16 mx-auto mb-4 opacity-50" />
+              <h3 className="text-xl font-semibold mb-2">
+                {searchTerm || filterStatus !== "all"
+                  ? "No websites found"
+                  : "No websites yet"}
+              </h3>
+              <p className="opacity-70 mb-6">
+                {searchTerm || filterStatus !== "all"
+                  ? "Try adjusting your search or filter criteria"
+                  : "Create your first website to get started"}
+              </p>
+              {filterStatus === "all" && !searchTerm && (
+                <button
+                  onClick={handleCreateNew}
+                  className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
+                    theme === "dark"
+                      ? "bg-dark-primary text-white"
+                      : "bg-light-primary text-white"
+                  }`}
+                >
+                  Create Your First Website
+                </button>
+              )}
+            </div>
+          ) : (
+            <div
+              className={
+                viewMode === "grid"
+                  ? "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+                  : "space-y-4"
+              }
+            >
+              {filteredWebsites.map((website, index) => (
+                <motion.div
+                  key={website.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 + index * 0.1 }}
+                  className={`group relative rounded-xl overflow-hidden border transition-all duration-300 hover:scale-105 ${
+                    theme === "dark"
+                      ? "bg-dark-sidebar border-dark-border hover:border-dark-primary"
+                      : "bg-light-sidebar border-light-border hover:border-light-primary"
+                  } ${viewMode === "list" ? "flex items-center p-4" : ""}`}
+                >
+              {viewMode === "grid" ? (
+                    <>
+                      <div className="aspect-video overflow-hidden">
+                        <img
+                          src={website.thumbnail}
+                          alt={website.name}
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                        />
+                      </div>
+                      <div className="p-4">
+                        <div className="flex items-start justify-between mb-2">
+                          <h3
+                            className={`font-semibold text-lg truncate ${
+                              theme === "dark"
+                                ? "text-dark-text"
+                                : "text-light-text"
+                            }`}
+                          >
+                            {website.name}
+                          </h3>
+                          <div className="relative">
+                            <button
+                              className={`p-1 rounded-full transition-colors ${
+                                theme === "dark"
+                                  ? "hover:bg-dark-background"
+                                  : "hover:bg-light-background"
+                              }`}
+                            >
+                              <MoreVertical className="h-4 w-4" />
+                            </button>
+                          </div>
+                        </div>
+                        <p
+                          className={`text-sm mb-3 line-clamp-2 ${
+                            theme === "dark"
+                              ? "text-dark-infoText"
+                              : "text-light-info"
+                          }`}
+                        >
+                          {website.description}
+                        </p>
+                        <div className="flex items-center justify-between mb-4">
+                          <span
+                            className={`text-xs ${
+                              theme === "dark"
+                                ? "text-dark-infoText"
+                                : "text-light-info"
+                            }`}
+                          >
+                            {website.lastModified}
+                          </span>
+                          <span
+                            className={`px-2 py-1 rounded-full text-xs font-medium ${
+                              website.status === "published"
+                                ? theme === "dark"
+                                  ? "bg-green-900 text-green-300"
+                                  : "bg-green-100 text-green-800"
+                                : theme === "dark"
+                                ? "bg-yellow-900 text-yellow-300"
+                                : "bg-yellow-100 text-yellow-800"
+                            }`}
+                          >
+                            {website.status}
+                          </span>
+                        </div>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => handleEditWebsite(website.id)}
+                            className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                              theme === "dark"
+                                ? "bg-dark-primary text-white hover:bg-opacity-90"
+                                : "bg-light-primary text-white hover:bg-opacity-90"
+                            }`}
+                          >
+                            <Edit3 className="h-4 w-4" />
+                            Edit
+                          </button>
+                          {website.status === "published" && (
+                            <button
+                              className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                theme === "dark"
+                                  ? "border border-dark-border text-dark-text hover:bg-dark-background"
+                                  : "border border-light-border text-light-text hover:bg-light-background"
+                              }`}
+                            >
+                              <Globe className="h-4 w-4" />
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <img
+                        src={website.thumbnail}
+                        alt={website.name}
+                        className="w-16 h-16 rounded-lg object-cover mr-4"
+                      />
+                      <div className="flex-1">
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <h3
+                              className={`font-semibold text-lg ${
+                                theme === "dark"
+                                  ? "text-dark-text"
+                                  : "text-light-text"
+                              }`}
+                            >
+                              {website.name}
+                            </h3>
+                            <p
+                              className={`text-sm ${
+                                theme === "dark"
+                                  ? "text-dark-infoText"
+                                  : "text-light-info"
+                              }`}
+                            >
+                              {website.description}
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-2 ml-4">
+                            <span
+                              className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                website.status === "published"
+                                  ? theme === "dark"
+                                    ? "bg-green-900 text-green-300"
+                                    : "bg-green-100 text-green-800"
+                                  : theme === "dark"
+                                  ? "bg-yellow-900 text-yellow-300"
+                                  : "bg-yellow-100 text-yellow-800"
+                              }`}
+                            >
+                              {website.status}
+                            </span>
+                            <button
+                              onClick={() => handleEditWebsite(website.id)}
+                              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                theme === "dark"
+                                  ? "bg-dark-primary text-white hover:bg-opacity-90"
+                                  : "bg-light-primary text-white hover:bg-opacity-90"
+                              }`}
+                            >
+                              Edit
+                            </button>
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-between mt-2">
+                          <span
+                            className={`text-xs ${
+                              theme === "dark"
+                                ? "text-dark-infoText"
+                                : "text-light-info"
+                            }`}
+                          >
+                            Last modified: {website.lastModified}
+                          </span>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Dashboard;
